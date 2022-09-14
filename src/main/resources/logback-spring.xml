@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE logback>
+<configuration>
+    <property name="logFileName" value="app" />
+
+    <!-- for development (application.properties#spring.profiles.active switch the mode) -->
+    <springProfile name="development">
+        <property name="logLevel" value="DEBUG"/>
+        <property name="logFilePath" value="target/log/" />
+    </springProfile>
+
+    <!-- for production (application.properties#spring.profiles.active switch the mode) -->
+    <springProfile name="production">
+        <property name="logLevel" value="INFO"/>
+        <property name="logFilePath" value="/var/log/" />
+    </springProfile>
+
+    <!-- stdout -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.out</target>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy/MM/dd HH:mm:ss} %-5level [%thread] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- logfile -->
+    <appender name="APPLICATION_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logFilePath}${logFileName}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logFilePath}${logFileName}-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <maxHistory>3</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>%d{yyyy/MM/dd HH:mm:ss} %-5level [%thread] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- log settings for this application -->
+    <logger name="com.example.springexam" level="${logLevel}">
+        <appender-ref ref="APPLICATION_LOG" />
+    </logger>
+
+    <!-- log settings for the SpringBoot and this application -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
