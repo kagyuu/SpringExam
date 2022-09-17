@@ -33,6 +33,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
+			<version>5.3.22</version>
 		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -59,15 +60,22 @@
 	<build>
 		<plugins>
 			<plugin>
+				<!--
+				https://spring.pleiades.io/spring-boot/docs/current/maven-plugin/reference/htmlsingle/
+				The version tag is not needed because parent (spring-boot-starter-parent) knows its version.
+				But I wrote the version tag because the IntelliJ warn lacking version.
+				-->
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.7.3</version>
+				<version>${project.parent.version}</version>
 				<configuration>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>${lombok.version}</version>
+							<!-- Don't add version tag. If you added version tag. you will see
+							that following curious error message:
+							 "Cannot find 'version' in class org.springframework.boot.maven.Exclude" -->
 						</exclude>
 					</excludes>
 				</configuration>
